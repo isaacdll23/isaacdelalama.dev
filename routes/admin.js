@@ -28,7 +28,7 @@ async function getUserByName(username){
 }
 
 router.get('/', (req, res) => {
-    res.render('admin')
+    res.render('admin_login')
 })
 
 router.post('/', urlEncodedParser, async(req, res) => {
@@ -47,7 +47,9 @@ router.post('/', urlEncodedParser, async(req, res) => {
         }
     }
 
-    res.render('admin')
+    // TODO: Flash to user that login credentials are incorrect
+
+    res.render('admin_login')
 
 })
 
