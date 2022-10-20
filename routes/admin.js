@@ -28,12 +28,34 @@ async function getUserByName(username){
 }
 
 router.get('/', (req, res) => {
+    if(req.session.isAuthenticated){
+        res.redirect('/admin/portal/')
+        return
+    }
+
     res.render('admin_login')
 })
 
-router.post('/', urlEncodedParser, async(req, res) => {
-    const hashedPassword = getHashedPassword(req.body.password)
+router.get('/portal', (req, res) => {
+    if(!req.session.isAuthenticated){
+        res.redirect('/admin/')
+        return
+    }
 
+    res.render('admin_portal', {username: req.session.username})
+})
+
+router.get('/editor', (req, res) => {
+    if (!req.session.isAuthenticated){
+        res.redirect('/admin/')
+        return
+    }
+
+    res.render('journal_editor')
+})
+
+router.post('/login', urlEncodedParser, async(req, res) => {
+    const hashedPassword = getHashedPassword(req.body.password)
     const userData = await getUserByName(req.body.username)
 
     if(userData == null){
@@ -41,16 +63,18 @@ router.post('/', urlEncodedParser, async(req, res) => {
     } else {
         var isAuthenticated = (userData.password === hashedPassword)
 
-        if (isAuthenticated){
-            res.render('admin_portal')
+        if (isAuthenticated || req.session.isAuthenticated ){
+            req.session.isAuthenticated = true
+            req.session.username = req.body.username
+            res.redirect('/admin/portal')
             return
         }
     }
 
     // TODO: Flash to user that login credentials are incorrect
 
-    res.render('admin_login')
-
+    res.redirect('/admin/')
 })
+
 
 module.exports = router
