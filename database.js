@@ -1,6 +1,6 @@
 const pgp = require('pg-promise')()
-const config = require("./config.json")
+const { connectionString } = require("./config.json")
 
-const db = pgp(config.connectionString)
+const db = pgp(connectionString)
 
 module.exports = db
