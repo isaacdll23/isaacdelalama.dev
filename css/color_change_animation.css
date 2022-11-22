@@ -1,0 +1,83 @@
+.color-cycle {
+    animation: colorchange alternate infinite;
+    -webkit-animation: colorchange alternate infinite;
+    -moz-animation: colorchange alternate infinite;
+    -o-animation: colorchange alternate infinite;
+    
+    animation-duration: 15s;
+    animation-iteration-count: 10;
+    animation-direction: alternate;
+    
+  }
+  
+  @keyframes colorchange
+  {
+    0%,100% {color: #1abc9c }
+    5% {color: #2ecc71 }
+    10% {color: #3498db }
+    15% {color: #9b59b6 }
+    20% {color: #34495e }
+    25% {color: #16a085 }
+    30% {color: #27ae60 }
+    35% {color: #2980b9 }
+    40% {color: #8e44ad }
+    45% {color: #2c3e50 }
+    50% {color: #f1c40f }
+    55% {color: #e67e22 }
+    60% {color: #e74c3c }
+    65% {color: #ecf0f1 }
+    70% {color: #95a5a6 }
+    75% {color: #f39c12 }
+    80% {color: #d35400 }
+    85% {color: #c0392b }
+    90% {color: #bdc3c7 }
+    95% {color: #7f8c8d }
+  }
+  
+  @-webkit-keyframes colorchange /* Safari and Chrome - necessary duplicate */
+  {
+    0%,100% {color: #1abc9c }
+    5% {color: #2ecc71 }
+    10% {color: #3498db }
+    15% {color: #9b59b6 }
+    20% {color: #34495e }
+    25% {color: #16a085 }
+    30% {color: #27ae60 }
+    35% {color: #2980b9 }
+    40% {color: #8e44ad }
+    45% {color: #2c3e50 }
+    50% {color: #f1c40f }
+    55% {color: #e67e22 }
+    60% {color: #e74c3c }
+    65% {color: #ecf0f1 }
+    70% {color: #95a5a6 }
+    75% {color: #f39c12 }
+    80% {color: #d35400 }
+    85% {color: #c0392b }
+    90% {color: #bdc3c7 }
+    95% {color: #7f8c8d }
+  }
+  
+  @-moz-keyframes colorchange /* Firefox */
+  {
+    0%,100% {color: #1abc9c }
+    5% {color: #2ecc71 }
+    10% {color: #3498db }
+    15% {color: #9b59b6 }
+    20% {color: #34495e }
+    25% {color: #16a085 }
+    30% {color: #27ae60 }
+    35% {color: #2980b9 }
+    40% {color: #8e44ad }
+    45% {color: #2c3e50 }
+    50% {color: #f1c40f }
+    55% {color: #e67e22 }
+    60% {color: #e74c3c }
+    65% {color: #ecf0f1 }
+    70% {color: #95a5a6 }
+    75% {color: #f39c12 }
+    80% {color: #d35400 }
+    85% {color: #c0392b }
+    90% {color: #bdc3c7 }
+    95% {color: #7f8c8d }
+  }
