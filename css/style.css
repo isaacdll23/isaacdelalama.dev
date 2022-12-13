@@ -96,6 +96,10 @@ body::-webkit-scrollbar-thumb {
 }
 
 .projects-link-container {
+    margin-top: 0.5rem;
+}
+
+.resume-container {
     margin-top: 7rem;
 }
 
