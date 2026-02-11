@@ -1,0 +1,65 @@
+@page {
+  margin: 0.6in;
+}
+
+* {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+body {
+  background: #ffffff;
+  color: #000000;
+  font-size: 11pt;
+  line-height: 1.5;
+}
+
+.nav,
+.hero__links,
+.footer a,
+.skip-link {
+  display: none !important;
+}
+
+.site-header {
+  border: none;
+}
+
+.hero {
+  padding: 0 0 24px;
+}
+
+.section {
+  padding: 24px 0;
+  border-bottom: 1px solid #cccccc;
+}
+
+.section__header {
+  margin-bottom: 12px;
+}
+
+.timeline__item,
+.card,
+.featured {
+  border: 1px solid #cccccc;
+  background: #ffffff;
+}
+
+.tag {
+  border: 1px solid #cccccc;
+  color: #000000;
+}
+
+a {
+  color: #000000;
+}
+
+a[href^="http"]::after {
+  content: " (" attr(href) ")";
+  font-size: 9pt;
+}
+
+.footer {
+  border: none;
+  padding: 24px 0 0;
+}
