@@ -5,8 +5,10 @@ on:
 jobs:
   smoke:
     runs-on: k3s-runners
+    container:
+      image: ubuntu:24.04
     steps:
       - run: |
-          echo "ARC runner is working"
+          echo "hello from container job"
           uname -a
           id
