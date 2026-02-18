@@ -1,0 +1,10 @@
+name: ARC debug
+on: { workflow_dispatch: {} }
+
+jobs:
+  debug:
+    runs-on: [self-hosted, k3s, arc]
+    steps:
+      - run: |
+          echo "job running on ARC"
+          sleep 60
