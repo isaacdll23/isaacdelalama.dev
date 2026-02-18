@@ -1,0 +1,27 @@
+name: Kaniko smoke test
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: [self-hosted, k3s, arc]
+
+    # Run the entire job inside the Kaniko container
+    container:
+      image: gcr.io/kaniko-project/executor:v1.24.0
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and push with Kaniko
+        env:
+          IMAGE: registry.isaacdelalama.dev/test/kaniko-smoke:${{ github.sha }}
+        run: |
+          # Kaniko expects docker auth at /kaniko/.docker/config.json
+          mkdir -p /kaniko/.docker
+          cp /run/secrets/registry-config/config.json /kaniko/.docker/config.json
+
+          /kaniko/executor \
+            --context "${GITHUB_WORKSPACE}" \
+            --dockerfile "${GITHUB_WORKSPACE}/Dockerfile" \
+            --destination "${IMAGE}"
