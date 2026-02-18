@@ -4,7 +4,7 @@ on:
 
 jobs:
   smoke:
-    runs-on: self-hosted
+    runs-on: k3s-runners
     steps:
       - run: |
           echo "ARC runner is working"
