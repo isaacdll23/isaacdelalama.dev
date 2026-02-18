@@ -1,10 +1,12 @@
-name: ARC debug
-on: { workflow_dispatch: {} }
+name: ARC smoke
+on:
+  workflow_dispatch:
 
 jobs:
-  debug:
-    runs-on: [self-hosted, k3s, arc]
+  smoke:
+    runs-on: self-hosted
     steps:
       - run: |
-          echo "job running on ARC"
-          sleep 60
+          echo "ARC runner is working"
+          uname -a
+          id
