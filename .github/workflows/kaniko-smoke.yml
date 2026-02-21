@@ -6,10 +6,9 @@ jobs:
   build:
     runs-on: k3s-runners
 
-    # Run the entire job inside the Kaniko container
+    # Use a glibc-based job container so JS actions can run (/__e/node20/bin/node).
     container:
-      # ARC kube-mode container jobs start with `tail`; use debug image which includes it.
-      image: gcr.io/kaniko-project/executor:v1.24.0-debug
+      image: ubuntu:24.04
 
     steps:
       - uses: actions/checkout@v4
@@ -18,11 +17,20 @@ jobs:
         env:
           IMAGE: registry.isaacdelalama.dev/test/kaniko-smoke:${{ github.sha }}
         run: |
+          apt-get update
+          apt-get install -y --no-install-recommends ca-certificates curl
+          rm -rf /var/lib/apt/lists/*
+
+          curl -fsSL \
+            -o /usr/local/bin/kaniko-executor \
+            https://github.com/GoogleContainerTools/kaniko/releases/download/v1.24.0/executor_linux_amd64
+          chmod +x /usr/local/bin/kaniko-executor
+
           # Kaniko expects docker auth at /kaniko/.docker/config.json
           mkdir -p /kaniko/.docker
           cp /run/secrets/registry-config/config.json /kaniko/.docker/config.json
 
-          /kaniko/executor \
+          /usr/local/bin/kaniko-executor \
             --context "${GITHUB_WORKSPACE}" \
             --dockerfile "${GITHUB_WORKSPACE}/Dockerfile" \
             --destination "${IMAGE}"
