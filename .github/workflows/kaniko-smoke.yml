@@ -8,7 +8,8 @@ jobs:
 
     # Run the entire job inside the Kaniko container
     container:
-      image: gcr.io/kaniko-project/executor:v1.24.0
+      # ARC kube-mode container jobs start with `tail`; use debug image which includes it.
+      image: gcr.io/kaniko-project/executor:v1.24.0-debug
 
     steps:
       - uses: actions/checkout@v4
