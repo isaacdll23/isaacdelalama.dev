@@ -6,31 +6,28 @@ jobs:
   build:
     runs-on: k3s-runners
 
-    # Use a glibc-based job container so JS actions can run (/__e/node20/bin/node).
+    # ARC kube-mode uses `tail` for container jobs; debug image includes it.
     container:
-      image: ubuntu:24.04
+      image: gcr.io/kaniko-project/executor:v1.24.0-debug
 
     steps:
-      - uses: actions/checkout@v4
-
       - name: Build and push with Kaniko
         env:
           IMAGE: registry.isaacdelalama.dev/test/kaniko-smoke:${{ github.sha }}
         run: |
-          apt-get update
-          apt-get install -y --no-install-recommends ca-certificates curl
-          rm -rf /var/lib/apt/lists/*
+          WORKDIR=/workspace/src
+          ARCHIVE=/workspace/src.tar.gz
+          mkdir -p "${WORKDIR}"
 
-          curl -fsSL \
-            -o /usr/local/bin/kaniko-executor \
-            https://github.com/GoogleContainerTools/kaniko/releases/download/v1.24.0/executor_linux_amd64
-          chmod +x /usr/local/bin/kaniko-executor
+          # Avoid JS actions in kaniko container by fetching source archive directly.
+          wget -q -O "${ARCHIVE}" "https://codeload.github.com/${GITHUB_REPOSITORY}/tar.gz/${GITHUB_SHA}"
+          tar -xzf "${ARCHIVE}" -C "${WORKDIR}" --strip-components=1
 
           # Kaniko expects docker auth at /kaniko/.docker/config.json
           mkdir -p /kaniko/.docker
           cp /run/secrets/registry-config/config.json /kaniko/.docker/config.json
 
-          /usr/local/bin/kaniko-executor \
-            --context "${GITHUB_WORKSPACE}" \
-            --dockerfile "${GITHUB_WORKSPACE}/Dockerfile" \
+          /kaniko/executor \
+            --context "${WORKDIR}" \
+            --dockerfile "${WORKDIR}/Dockerfile" \
             --destination "${IMAGE}"
