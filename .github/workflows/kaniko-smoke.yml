@@ -14,6 +14,8 @@ jobs:
       - name: Build and push with Kaniko
         env:
           IMAGE: registry.isaacdelalama.dev/test/kaniko-smoke:${{ github.sha }}
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
         run: |
           WORKDIR=/workspace/src
           ARCHIVE=/workspace/src.tar.gz
@@ -24,8 +26,13 @@ jobs:
           tar -xzf "${ARCHIVE}" -C "${WORKDIR}" --strip-components=1
 
           # Kaniko expects docker auth at /kaniko/.docker/config.json
+          # Build it from GitHub Actions secrets instead of a missing k8s mount.
+          : "${REGISTRY_USERNAME:?REGISTRY_USERNAME secret is required}"
+          : "${REGISTRY_PASSWORD:?REGISTRY_PASSWORD secret is required}"
           mkdir -p /kaniko/.docker
-          cp /run/secrets/registry-config/config.json /kaniko/.docker/config.json
+          cat > /kaniko/.docker/config.json <<EOF
+          {"auths":{"registry.isaacdelalama.dev":{"username":"${REGISTRY_USERNAME}","password":"${REGISTRY_PASSWORD}"}}}
+          EOF
 
           /kaniko/executor \
             --context "${WORKDIR}" \
